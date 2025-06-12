@@ -1,0 +1,78 @@
+show dbs
+/*para mostrar os bancos de dados conectados na instância MongoDB.*/
+
+use ifsp
+/*para criar um banco de dados da aplicação "ifsp".*/
+
+db
+/*atalho para o banco de dados em que está sendo trabalhado.*/
+
+var contato = {"nome" : "Fabio Teixeira", "email" : "fabio.teixeira@ifsp.edu.br"}
+contato
+/*criação de uma variável chamada "contato" com dois atributos. Depois ela é mostrada.*/
+
+db.contatos.insertOne(contato)
+/*inserindo "contato" numa coleção chamada "contatos"*/
+
+show dbs
+/*mostra os bancos de dados*/
+
+show collections
+/*mostra as coleções criadas*/
+
+db.contatos.find()
+/*para buscar os documentos na coleção "contatos"*/
+
+var contato_A = {"nome" : "Fabiano Teixeira", "email" : "fabiano.teixeira@ifsp.edu.br"}
+var contato_B = {"nome" : "Melissa Teixeira", "email" : "melissa.teixeira@ifsp.edu.br"}
+db.contatos.insertOne(contato_A)
+db.contatos.insertOne(contato_B)
+/*criação de documentos e inserção deles na coleção*/
+
+db.contatos.find()
+/*para mostrar novamente a coleção "contatos", agora com 3 documentos*/
+
+db.contatos.findOne()
+/*para buscar o primeiro documento na coleção "contatos"*/
+
+var criterio = {"email" : "fabio.teixeira@ifsp.edu.br"}
+var contato = db.contatos.find(criterio)
+contato
+/*criação de uma variável para ser utilizada como criterio na busca. 
+Nesse caso, o critério é que o documento tenha um campo "email" preenchido com "fabio.teixeira@ifsp.edu.br"
+O resultado da busca é guardado na variável "contato" e mostrado depois.*/
+
+var criterio = {"nome" : /fab/i}
+var contato = db.contatos.find(criterio)
+contato
+/*é guardado na variável contato todos os contatos de "contatos" que tenham "fab" em seus nomes, 
+independente de estar em letras maíusculas ou minúsculas*/
+
+db.contatos.countDocuments()
+/*conta a quantidade de elementos na coleção "contatos"*/
+
+db.contatos.countDocuments({"nome" : "/fab/i"})
+/*conta quantidade de elementos na coleção "contatos" que condizem com o critério {"nome" : "/fab/i"}*/
+
+db.contatos.find({ "$or":[ {"email" : "fabio.teixeira@ifsp.edu.br"},{"nome" : "Melissa Teixeira"} ] })
+/*busca os documentos em "contatos" que atendam ao primeiro critério ou ao segundo. "Query selector" $or, OU.*/
+
+db.contatos.find({"email" : {"$ne" : "fabio.teixeira@ifsp.edu.br"}})
+/*busca os documentos em "contatos" que não possuam "fabio.teixeira@ifsp.edu.br" no campo "email". "Query selector" $ne, negação.*/
+
+db.contatos.find({}, {"nome":1})
+/*mostra apenas o nome e o id dos documentos em "contatos".*/
+
+db.contatos.find({}, {"nome":1, _id:0})
+/*mostra apenas os nomes nos documentos da coleção "contatos"*/
+
+db.contatos.remove({"email":"fabio.teixeira@ifsp.edu.br"})
+/*removeria o(s) documento(s) que tivessem "fabio.teixeira@ifsp.edu.br" 
+no campo "email", mas esse comando não funciona mais.*/
+
+var contato = db.contatos.findOne({"nome":"Fabiano Teixeira"})
+contato
+contato.nome = "Fabiano Sérgio Teixeira"
+db.contatos.update({"nome":"Fabiano Teixeira"}, contato)
+/*atualiza o documento editando uma cópia dele e usando ela no update().*/
+
