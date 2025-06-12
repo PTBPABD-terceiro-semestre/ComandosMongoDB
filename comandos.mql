@@ -76,3 +76,20 @@ contato.nome = "Fabiano Sérgio Teixeira"
 db.contatos.update({"nome":"Fabiano Teixeira"}, contato)
 /*atualiza o documento editando uma cópia dele e usando ela no update().*/
 
+var contato = {"nome":"Angela Teixeira", "email" : "angela.teixeira@ifsp.edu.br"}
+db.contatos.update({"nome":"Angela Teixeira"}, contato, true);
+/*atualiza o documento que tiver {"nome":"Angela Teixeira"} e, se esse documento não existir, cria ele na coleção.*/
+
+db.contatos.update({"nome":"Angela Teixeira"},{"$set" : {"nome":"Angela Cristina"}});
+/*atualiza um campo específico dos documentos que atenderem ao(s) critério(s) imposto(s).*/
+
+var contato = db.contatos.findOne({"nome" : "Melissa Teixeira"})
+var emergencia = db.contatos.findOne({"nome" : "Angela Cristina"})
+contato.emergencia = emergencia
+db.contatos.update({"_id" : contato._id}, contato);
+/*insere a cópia de um documento dentro de outro documento, como se fosse mais um campo dele.*/
+
+var contato = db.contatos.findOne({"nome" : "Melissa Teixeira"})
+var emergencia = db.contatos.findOne({"nome" : "Angela Cristina"})
+contato.emergencia = emergencia._id
+/*insere um campo "emergencia" no documento, que guarda o "_id" de outro documento.*/
